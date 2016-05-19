@@ -74,14 +74,17 @@ namespace spec
 		void Transversals_Nullcheck()
 		{
 			struct node *root= new_node_spec(5);
-			int arr1[10];
-			int ans[6];
+			int arr1[1];
+			int ans[1] = { 5 };
 			inorder(NULL, NULL);
 			preorder(NULL, NULL);
 			postorder(NULL, NULL);;
-			postorder(root, NULL);
-			inorder(root, NULL);
-			preorder(root, NULL);
+			postorder(root, arr1);
+			Assert::AreEqual(ans[0], arr1[0], L"TestCase Failed for null check", 1, 2);
+			inorder(root, arr1);
+			Assert::AreEqual(ans[0], arr1[0], L"TestCase Failed for null check", 1, 2);
+			preorder(root, arr1);
+			Assert::AreEqual(ans[0], arr1[0], L"TestCase Failed for null check", 1, 2);
 		};
 
 		[TestMethod,Timeout(2000)]
@@ -128,7 +131,7 @@ namespace spec
 				{ 2,7,12,10,5}
 			};
 			int results[3][5];
-			int temp_inorder[5];
+			//int temp_inorder[5];
 			inorder(root, results[0]);
 			preorder(root, results[1]);
 			postorder(root, results[2]);

@@ -29,9 +29,66 @@ struct node{
 	struct node *right;
 };
 
-
-
-int* BSTRighttoLeftRows(struct node* root)
+struct queue
 {
-    return NULL;
+	node **q;
+	int front, rear, max;
+};
+
+
+typedef struct queue Q;
+typedef struct node node;
+
+Q * createQueue(int n)
+{
+	Q *myq = (Q *)malloc(sizeof(Q));
+	myq->q = (node **)malloc(n*sizeof(node));
+	myq->front = myq->rear = -1;
+	return myq;
 }
+
+int noofNodes(struct node * root)
+{
+	if (root)
+	{
+		int n = noofNodes(root->left);
+		n++;
+		n += noofNodes(root->right);
+		return n;
+	}
+	return 0;
+}
+void enque(Q *myq, node *data)
+{
+	myq->q[++myq->rear] = data;
+}
+node * deque(Q *myq)
+{
+	return myq->q[++myq->front];
+}
+bool isQueueEmpty(Q *myq)
+{
+	return myq->front == myq->rear;
+}
+int *BSTRighttoLeftRows(node * root)
+{
+	if (root == NULL)
+		return NULL;
+	int n = noofNodes(root), i = 0;
+	int *a = (int *)malloc(n*sizeof(int));
+	node *temp = root;
+	Q *myq = createQueue(n);
+	enque(myq, temp);
+	do
+	{
+		temp = deque(myq);
+		a[i++] = temp->data;
+		if (temp->right)
+			enque(myq, temp->right);
+		if (temp->left)
+			enque(myq, temp->left);
+
+	} while (!isQueueEmpty(myq));
+	return a;
+}
+

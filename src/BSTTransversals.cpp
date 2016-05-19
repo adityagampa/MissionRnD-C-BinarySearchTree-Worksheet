@@ -21,15 +21,47 @@ struct node{
 	int data;
 	struct node *right;
 };
+typedef struct node node;
 
-
-void inorder(struct node *root, int *arr){
-	
+int myinorder(node * root, int *a, int i)
+{
+	if (root)
+	{
+		i = myinorder(root->left, a, i);
+		a[i] = root->data;
+		return myinorder(root->right, a, i + 1);
+	}
+	return i;
 }
-void preorder(struct node *root, int *arr){
-	
+void inorder(node * root, int *a)
+{
+	myinorder(root, a, 0);
 }
-void postorder(struct node *root, int *arr){
-	
+int mypreorder(node * root, int *a, int i)
+{
+	if (root)
+	{
+		a[i] = root->data;
+		i = mypreorder(root->left, a, i + 1);
+		return mypreorder(root->right, a, i);
+	}
+	return i;
 }
-
+void preorder(node * root, int *a)
+{
+	mypreorder(root, a, 0);
+}int mypostorder(node * root, int *a, int i)
+{
+	if (root)
+	{
+		i = mypostorder(root->left, a, i);
+		i = mypostorder(root->right, a, i);
+		a[i] = root->data;
+		return i + 1;
+	}
+	return i;
+}
+void postorder(node * root, int *a)
+{
+	mypostorder(root, a, 0);
+}
